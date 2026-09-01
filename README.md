@@ -12,19 +12,34 @@ Treinei dois modelos para responder, no instante da compra, se aquele pedido vai
 
 **Separei treino e teste por tempo, não por sorteio:** treino no passado, teste no futuro. Sortear teria deixado o modelo ver o futuro.
 
+E revendo o notebook depois de pronto, achei um vazamento que tinha passado: uma variável contava *"quantos pedidos nesta semana"* — mas quem compra na quarta não sabe quantos pedidos virão no fim de semana. Troquei pelos **7 dias anteriores**. Custou 0,004 de AUC. Conto no fim.
+
 ## O que encontrei
 
 **Acurácia não serve aqui.** Só 6,8% dos pedidos atrasam, então um modelo que diz "nunca atrasa" acerta 93,2% e nunca avisa ninguém.
 
-**A regressão logística ganhou do gradient boosting** — 0,740 contra 0,645 de AUC. Não era o esperado. A taxa de atraso caiu pela metade entre o período de treino e o de teste, e o modelo mais simples resistiu melhor à mudança.
+**A regressão logística ganhou do gradient boosting** — 0,736 contra 0,636 de AUC. Não era o esperado. A taxa de atraso caiu pela metade entre o período de treino e o de teste, e o modelo mais simples resistiu melhor à mudança.
 
 **O modelo separou o Brasil por região sozinho.** Os 9 estados do Nordeste e 4 dos 7 do Norte puxam o risco pra cima; São Paulo, Minas, Paraná e o Distrito Federal puxam pra baixo. Ele nunca recebeu mapa, distância nem a palavra "região" — só siglas de duas letras.
 
-**Entre o décimo mais seguro e o mais arriscado, a taxa real de atraso vai de 0,2% a 8,0%.** Quarenta vezes maior. Avisando os 30% mais arriscados, pegaria 64% de todos os atrasos.
+**Entre o décimo mais seguro e o mais arriscado, a taxa real de atraso vai de 0,2% a 7,6%.** Quase quarenta vezes maior. Avisando os 30% mais arriscados, pegaria 64% de todos os atrasos.
 
 ## Limitação
 
-Com AUC 0,740 e precisão de 6,5%, a maioria dos avisos seria alarme falso. Serve para priorizar operação, não para prometer prazo diferente ao cliente.
+Com AUC 0,736 e precisão de 6,3%, a maioria dos avisos seria alarme falso. Serve para priorizar operação, não para prometer prazo diferente ao cliente.
+
+## O vazamento que eu mesmo achei
+
+A variável de congestionamento contava os pedidos da **semana inteira** do pedido. Parece inofensiva — não é uma data proibida, é uma contagem —, e por isso passou pela minha própria conferência coluna a coluna. Mas na hora da compra a semana ainda não acabou: metade daqueles pedidos ainda não existia.
+
+Troquei por "pedidos nos **7 dias anteriores**" e rodei tudo de novo:
+
+| | AUC | décimo mais arriscado | avisando 30% |
+|---|---|---|---|
+| com vazamento | 0,740 | 8,0% | pega 64% |
+| **corrigido** | **0,736** | **7,6%** | **pega 64%** |
+
+Quatro milésimos. O sinal era real, só estava sendo medido de um jeito impossível — o peso da variável nem se moveu (+0,48 nas duas versões).
 
 ## Como rodar
 
