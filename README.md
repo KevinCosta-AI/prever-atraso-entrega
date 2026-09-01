@@ -16,7 +16,7 @@ Treinei dois modelos para responder, no instante da compra, se aquele pedido vai
 
 **Acurácia não serve aqui.** Só 6,8% dos pedidos atrasam, então um modelo que diz "nunca atrasa" acerta 93,2% e nunca avisa ninguém.
 
-**A regressão logística ganhou do gradient boosting** — 0,740 contra 0,646 de AUC. Não era o esperado. A taxa de atraso caiu pela metade entre o período de treino e o de teste, e o modelo mais simples resistiu melhor à mudança.
+**A regressão logística ganhou do gradient boosting** — 0,740 contra 0,645 de AUC. Não era o esperado. A taxa de atraso caiu pela metade entre o período de treino e o de teste, e o modelo mais simples resistiu melhor à mudança.
 
 **O modelo separou o Brasil por região sozinho.** Os 9 estados do Nordeste e 4 dos 7 do Norte puxam o risco pra cima; São Paulo, Minas, Paraná e o Distrito Federal puxam pra baixo. Ele nunca recebeu mapa, distância nem a palavra "região" — só siglas de duas letras.
 
@@ -24,7 +24,7 @@ Treinei dois modelos para responder, no instante da compra, se aquele pedido vai
 
 ## Limitação
 
-Com AUC 0,740 e precisão perto de 8%, a maioria dos avisos seria alarme falso. Serve para priorizar operação, não para prometer prazo diferente ao cliente.
+Com AUC 0,740 e precisão de 6,5%, a maioria dos avisos seria alarme falso. Serve para priorizar operação, não para prometer prazo diferente ao cliente.
 
 ## Como rodar
 
