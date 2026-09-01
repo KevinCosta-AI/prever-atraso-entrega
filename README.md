@@ -8,7 +8,7 @@ No [projeto anterior](https://github.com/KevinCosta-AI/nordeste-espera-mais) des
 
 ## O que fiz
 
-Treinei dois modelos para responder, no instante da compra, se aquele pedido vai chegar depois da data prometida. Usei só informação disponível naquele momento: estado do cliente e do vendedor, preço, frete, peso, categoria, prazo prometido e congestionamento da semana.
+Treinei dois modelos para responder, no instante da compra, se aquele pedido vai chegar depois da data prometida. Usei só informação disponível naquele momento: estado do cliente e do vendedor, preço, frete, peso, categoria, prazo prometido e o congestionamento dos 7 dias anteriores.
 
 **Separei treino e teste por tempo, não por sorteio:** treino no passado, teste no futuro. Sortear teria deixado o modelo ver o futuro.
 
